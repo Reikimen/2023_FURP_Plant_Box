@@ -42,7 +42,7 @@ PS: 因为本人使用的图床是SM.MS+Github，如果markdown中的图片无�
     - 1.2 CO2传感器
     - 1.3 PH传感器(不适用)
     - 1.4 光敏传感器
-        - 1.4.1 光合有效辐射传感器
+        - 1.4.1 光合有效辐射传感器(RS485/模拟电压)
         - 1.4.2 DFROBOT光线传感器
     - 1.5 摄像（ESP32-CAM）
     - 1.6 水位传感器
@@ -136,7 +136,8 @@ https://item.taobao.com/item.htm?spm=a21n57.1.0.0.59f1523cDI8vUo&id=712234238518
 <img height="340" img src="https://s2.loli.net/2023/06/25/tIZH1cUwzs3WN45.png"/>
 </div>
 
-使用的资料暂未找到，需要去跟店家要，并且不知道它的型号，下周找PHD使用他的传感器
+电压模拟版的传感器由PHD pony提供，但是其读数有时候有问题  
+RS485使用的资料已经找到并且放在项目中, 但是因为时间缘故，没有实施RS485的传感器
 
 ### 1.4.2 DFROBOT光线传感器
 DFROBOT光线传感器：
@@ -169,6 +170,7 @@ ESP32-CAM规格书：https://docs.ai-thinker.com/_media/esp32/docs/esp32-cam_pro
 <img height="236" img src="https://s2.loli.net/2023/06/27/hCgnMpGA9VvHFua.jpg"/>
 </div>
 
+实际操作后，发现水位传感器因为接触液体，导致培养液晶体析出。日后希望使用超声波距离传感器或者浮漂等其他指示或者测量方式。  
 
 # 2.0 被控元件
 ## 2.1 开关 & 空占比控制电压
@@ -187,6 +189,9 @@ ESP32-CAM规格书：https://docs.ai-thinker.com/_media/esp32/docs/esp32-cam_pro
 <div align = center> 
 <img height="600" img src="https://s2.loli.net/2023/06/27/dUAJf5OGF3MiQpa.jpg"/>
 </div>
+
+最新设计方案，应用于第二代 GreenBox:   
+使用了12根灯带，并且让照明灯能够调节与植物之间的高度
 
 ## 2.3 加热模块（硅胶）
 硅胶加热板安装方式
@@ -216,9 +221,9 @@ ESP32-CAM规格书：https://docs.ai-thinker.com/_media/esp32/docs/esp32-cam_pro
 不锈钢云母加热器是采用Cr20Ni80为发热体绕制在预制好绝缘体的云母上。然后用金属不锈钢皮、铁皮或铜皮为导热体制作而成。可以做成圈板等其它异性型产品。
 
 ## 2.4 制冷模块（半导体）
-半导体制冷只能做到局部的降温。
+半导体制冷只能做到局部的降温，并且降温效果大概只有0.5摄氏度，但是它是一个很好的除湿器,仅仅半小时就可以除湿10%相对湿度。
 
-## 2.5 风扇
+## 2.5 风扇（Chassis fans）
 
 购买的为，双风扇带调速器  
 购买链接：https://item.taobao.com/item.htm?spm=a230r.1.14.32.53497bc3hta7z1&id=702562582969&ns=1&abbucket=15#detail
@@ -248,7 +253,7 @@ DFROBOT的资料：
 https://wiki.dfrobot.com.cn/_SKU_SEN0291__Gravity_I2C%E6%95%B0%E5%AD%97%E5%8A%9F%E7%8E%87%E8%AE%A1#.E6.9B.B4.E5.A4.9A
 
 ## 3.3 传感模块对传感器精度影响
-需要对比验证，根据实验具体情况具体分析 (江帆)
+需要对比验证，根据实验具体情况具体分析（因为时间缘故，尚未检验。我个人认为sensor的功耗并不高，因此我只监测了整个控制系统的功耗和LED灯带的功耗）
 
 # 4.0 系统框架
 ## 4.0 硬件组成
@@ -264,7 +269,7 @@ GreenBox.v1.0.x-release 系统组成
 220转12V2A电源适配器 + SG90 + 俩个风扇  
 能耗检测模块
 
-下一个小版本需要添加的：ESP32 CAM
+下一个release版本需要添加的：ESP32 CAM
 
 ## 4.1 程序框架
 flowchart
